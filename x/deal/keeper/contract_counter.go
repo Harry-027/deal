@@ -26,7 +26,7 @@ func (k Keeper) GetContractCounter(ctx sdk.Context, dealId string) (val types.Co
 	return val, true
 }
 
-func (k Keeper) GetAllContractCounter(ctx sdk.Context) ([]*types.ContractCounter, error){
+func (k Keeper) GetAllContractCounter(ctx sdk.Context) ([]*types.ContractCounter, error) {
 	var contractCounter []*types.ContractCounter
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ContractCounterKey))
 	iterator := store.Iterator(nil, nil)

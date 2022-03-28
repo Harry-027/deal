@@ -19,7 +19,7 @@ const (
 func createTestContractCounter(keeper *keeper.Keeper, ctx sdk.Context) types.ContractCounter {
 	item := types.ContractCounter{
 		IdValue: 1,
-		DealId: DEALID,
+		DealId:  DEALID,
 	}
 	keeper.SetContractCounter(ctx, item)
 	return item
