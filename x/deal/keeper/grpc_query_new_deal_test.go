@@ -31,14 +31,14 @@ func TestNewDealQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetNewDealRequest{
-				Index: strconv.FormatUint(msgs[0].DealId,10),
+				Index: strconv.FormatUint(msgs[0].DealId, 10),
 			},
 			response: &types.QueryGetNewDealResponse{NewDeal: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetNewDealRequest{
-				Index: strconv.FormatUint(msgs[1].DealId,10),
+				Index: strconv.FormatUint(msgs[1].DealId, 10),
 			},
 			response: &types.QueryGetNewDealResponse{NewDeal: msgs[1]},
 		},

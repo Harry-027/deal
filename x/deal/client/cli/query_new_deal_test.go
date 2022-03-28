@@ -57,7 +57,7 @@ func TestShowNewDeal(t *testing.T) {
 	}{
 		{
 			desc:    "found",
-			idIndex: strconv.FormatUint(objs[0].DealId,10),
+			idIndex: strconv.FormatUint(objs[0].DealId, 10),
 
 			args: common,
 			obj:  objs[0],

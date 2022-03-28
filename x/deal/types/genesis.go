@@ -25,7 +25,7 @@ func (gs GenesisState) Validate() error {
 	newDealIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.NewDealList {
-		index := string(NewDealKey(strconv.FormatUint(elem.DealId,10)))
+		index := string(NewDealKey(strconv.FormatUint(elem.DealId, 10)))
 		if _, ok := newDealIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for newDeal")
 		}

@@ -13,7 +13,7 @@ func (k Keeper) SetNewDeal(ctx sdk.Context, newDeal types.NewDeal) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NewDealKeyPrefix))
 	b := k.cdc.MustMarshal(&newDeal)
 	store.Set(types.NewDealKey(
-		strconv.FormatUint(newDeal.DealId,10),
+		strconv.FormatUint(newDeal.DealId, 10),
 	), b)
 }
 

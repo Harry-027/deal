@@ -30,7 +30,7 @@ func TestNewDealGet(t *testing.T) {
 	items := createNNewDeal(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetNewDeal(ctx,
-			strconv.FormatUint(item.DealId,10),
+			strconv.FormatUint(item.DealId, 10),
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -44,10 +44,10 @@ func TestNewDealRemove(t *testing.T) {
 	items := createNNewDeal(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveNewDeal(ctx,
-			strconv.FormatUint(item.DealId,10),
+			strconv.FormatUint(item.DealId, 10),
 		)
 		_, found := keeper.GetNewDeal(ctx,
-			strconv.FormatUint(item.DealId,10),
+			strconv.FormatUint(item.DealId, 10),
 		)
 		require.False(t, found)
 	}
