@@ -20,3 +20,7 @@ const (
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
+
+const (
+	DealCounterKey = "DealCounter-value-"
+)
