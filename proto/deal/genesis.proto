@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "deal/params.proto";
 import "deal/deal_counter.proto";
 import "deal/new_deal.proto";
+import "deal/contract_counter.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/Harry-027/deal/x/deal/types";
@@ -14,5 +15,6 @@ message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   DealCounter dealCounter = 2;
   repeated NewDeal newDealList = 3 [(gogoproto.nullable) = false];
+  repeated ContractCounter contractCounter = 4 [(gogoproto.nullable) = true];
   // this line is used by starport scaffolding # genesis/proto/state
 }

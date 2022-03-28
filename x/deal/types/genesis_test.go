@@ -33,6 +33,11 @@ func TestGenesisState_Validate(t *testing.T) {
 						DealId: 1,
 					},
 				},
+				ContractCounter: []*types.ContractCounter{
+					{
+						IdValue: 74,
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
