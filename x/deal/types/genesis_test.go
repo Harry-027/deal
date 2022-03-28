@@ -25,9 +25,31 @@ func TestGenesisState_Validate(t *testing.T) {
 				DealCounter: &types.DealCounter{
 					IdValue: 53,
 				},
+				NewDealList: []types.NewDeal{
+					{
+						DealId: 0,
+					},
+					{
+						DealId: 1,
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated newDeal",
+			genState: &types.GenesisState{
+				NewDealList: []types.NewDeal{
+					{
+						DealId: 0,
+					},
+					{
+						DealId: 0,
+					},
+				},
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {

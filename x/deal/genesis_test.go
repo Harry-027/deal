@@ -17,6 +17,14 @@ func TestGenesis(t *testing.T) {
 		DealCounter: &types.DealCounter{
 			IdValue: 57,
 		},
+		NewDealList: []types.NewDeal{
+			{
+				DealId: 0,
+			},
+			{
+				DealId: 1,
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -29,5 +37,6 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.Equal(t, genesisState.DealCounter, got.DealCounter)
+	require.ElementsMatch(t, genesisState.NewDealList, got.NewDealList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

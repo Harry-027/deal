@@ -13,6 +13,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if genState.DealCounter != nil {
 		k.SetDealCounter(ctx, *genState.DealCounter)
 	}
+	// Set all the newDeal
+	for _, elem := range genState.NewDealList {
+		k.SetNewDeal(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -27,6 +31,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	if found {
 		genesis.DealCounter = &dealCounter
 	}
+	genesis.NewDealList = k.GetAllNewDeal(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

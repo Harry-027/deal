@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "deal/params.proto";
+import "deal/new_deal.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/Harry-027/deal/x/deal/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/Harry027/deal/deal/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a NewDeal by index.
+	rpc NewDeal(QueryGetNewDealRequest) returns (QueryGetNewDealResponse) {
+		option (google.api.http).get = "/Harry-027/deal/deal/new_deal/{index}";
+	}
+
+	// Queries a list of NewDeal items.
+	rpc NewDealAll(QueryAllNewDealRequest) returns (QueryAllNewDealResponse) {
+		option (google.api.http).get = "/Harry-027/deal/deal/new_deal";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetNewDealRequest {
+	  string index = 1;
+
+}
+
+message QueryGetNewDealResponse {
+	NewDeal newDeal = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllNewDealRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllNewDealResponse {
+	repeated NewDeal newDeal = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
