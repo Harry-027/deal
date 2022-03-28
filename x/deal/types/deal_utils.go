@@ -16,7 +16,7 @@ func (newDeal *NewDeal) GetVendorAddress() (vendor sdk.AccAddress, err error) {
 }
 
 func (newDeal *NewDeal) ValidateCommission() (err error) {
-	if  1 <= newDeal.Commission && 100 >= newDeal.Commission {
+	if 1 <= newDeal.Commission && 100 >= newDeal.Commission {
 		return nil
 	}
 	return ErrInvalidCommission
@@ -34,5 +34,5 @@ func (newDeal *NewDeal) Validate() (err error) {
 	}
 
 	err = newDeal.ValidateCommission()
-		return err
+	return err
 }
