@@ -1,0 +1,12 @@
+syntax = "proto3";
+package Harry027.deal.deal;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/Harry-027/deal/x/deal/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}
