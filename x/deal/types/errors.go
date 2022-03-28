@@ -8,5 +8,7 @@ import (
 
 // x/deal module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrInvalidOwner = sdkerrors.Register(ModuleName, 1100, "Owner does not exists")
+	ErrInvalidVendor = sdkerrors.Register(ModuleName, 1101, "Vendor does not exists")
+	ErrInvalidCommission = sdkerrors.Register(ModuleName, 1102, "Invalid commission")
 )
