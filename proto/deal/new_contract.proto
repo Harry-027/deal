@@ -15,5 +15,6 @@ message NewContract {
   string expiry = 9; 
   uint32 shippingDelay = 10;
   string startTime = 11;
+  uint32 deliveryDelay = 12;
 }
 

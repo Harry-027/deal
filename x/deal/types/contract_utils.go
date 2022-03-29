@@ -25,8 +25,8 @@ func (newContract *NewContract) GetConsumerAddress() (consumer sdk.AccAddress, e
 	return consumer, sdkerrors.Wrapf(errInvalidConsumer, ErrInvalidConsumer.Error(), newContract.Consumer)
 }
 
-func (newContract *NewContract) GetCoin() (fees sdk.Coin) {
-	return sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(int64(newContract.Fees)))
+func (newContract *NewContract) GetCoin(amount uint64) (fees sdk.Coin) {
+	return sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(int64(amount)))
 }
 
 func (newContract *NewContract) Validate() (err error) {

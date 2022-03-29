@@ -12,6 +12,7 @@ service Msg {
       rpc CommitContract(MsgCommitContract) returns (MsgCommitContractResponse);
       rpc ApproveContract(MsgApproveContract) returns (MsgApproveContractResponse);
       rpc ShipOrder(MsgShipOrder) returns (MsgShipOrderResponse);
+      rpc OrderDelivered(MsgOrderDelivered) returns (MsgOrderDeliveredResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -70,6 +71,17 @@ message MsgShipOrder {
 }
 
 message MsgShipOrderResponse {
+  string idValue = 1;
+  string contractStatus = 2;
+}
+
+message MsgOrderDelivered {
+  string creator = 1;
+  string dealId = 2;
+  string contractId = 3;
+}
+
+message MsgOrderDeliveredResponse {
   string idValue = 1;
   string contractStatus = 2;
 }

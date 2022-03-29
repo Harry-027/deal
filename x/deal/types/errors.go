@@ -19,4 +19,5 @@ var (
 	ErrDescLength        = sdkerrors.Register(ModuleName, 1108, "Desc length too large")
 	ErrPaymentFailed     = sdkerrors.Register(ModuleName, 1109, "Payment Failed")
 	ErrNotCommitted      = sdkerrors.Register(ModuleName, 1110, "Contract not yet committed")
+	ErrNotShipped        = sdkerrors.Register(ModuleName, 1111, "Order not yet shipped")
 )

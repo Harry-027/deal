@@ -5,27 +5,27 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgShipOrder = "ship_order"
+const TypeMsgOrderDelivered = "order_delivered"
 
-var _ sdk.Msg = &MsgShipOrder{}
+var _ sdk.Msg = &MsgOrderDelivered{}
 
-func NewMsgShipOrder(creator string, dealId string, contractId string) *MsgShipOrder {
-	return &MsgShipOrder{
+func NewMsgOrderDelivered(creator string, dealId string, contractId string) *MsgOrderDelivered {
+	return &MsgOrderDelivered{
 		Creator:    creator,
 		DealId:     dealId,
 		ContractId: contractId,
 	}
 }
 
-func (msg *MsgShipOrder) Route() string {
+func (msg *MsgOrderDelivered) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgShipOrder) Type() string {
-	return TypeMsgShipOrder
+func (msg *MsgOrderDelivered) Type() string {
+	return TypeMsgOrderDelivered
 }
 
-func (msg *MsgShipOrder) GetSigners() []sdk.AccAddress {
+func (msg *MsgOrderDelivered) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -33,12 +33,12 @@ func (msg *MsgShipOrder) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgShipOrder) GetSignBytes() []byte {
+func (msg *MsgOrderDelivered) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgShipOrder) ValidateBasic() error {
+func (msg *MsgOrderDelivered) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

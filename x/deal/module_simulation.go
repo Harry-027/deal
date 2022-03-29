@@ -44,6 +44,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgShipOrder int = 100
 
+	opWeightMsgOrderDelivered = "op_weight_msg_create_chain"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgOrderDelivered int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -130,6 +134,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgShipOrder,
 		dealsimulation.SimulateMsgShipOrder(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgOrderDelivered int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgOrderDelivered, &weightMsgOrderDelivered, nil,
+		func(_ *rand.Rand) {
+			weightMsgOrderDelivered = defaultWeightMsgOrderDelivered
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgOrderDelivered,
+		dealsimulation.SimulateMsgOrderDelivered(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

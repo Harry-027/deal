@@ -34,7 +34,7 @@ func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveC
 		return nil, types.ErrNotCommitted
 	}
 
-	err = k.bank.SendCoinsFromAccountToModule(ctx, sdk.AccAddress(contract.Consumer), types.ModuleName, sdk.NewCoins(contract.GetCoin()))
+	err = k.bank.SendCoinsFromAccountToModule(ctx, sdk.AccAddress(contract.Consumer), types.ModuleName, sdk.NewCoins(contract.GetCoin(contract.Fees)))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
 	}
