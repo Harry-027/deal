@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-
 	"github.com/Harry-027/deal/x/deal/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"

@@ -9,7 +9,7 @@ const TypeMsgCreateContract = "create_contract"
 
 var _ sdk.Msg = &MsgCreateContract{}
 
-func NewMsgCreateContract(creator string, dealId string, consumer string, desc string, ownerETA string, expiry string) *MsgCreateContract {
+func NewMsgCreateContract(creator string, dealId string, consumer string, desc string, ownerETA string, expiry string, fees uint64) *MsgCreateContract {
 	return &MsgCreateContract{
 		Creator:  creator,
 		DealId:   dealId,
@@ -17,6 +17,7 @@ func NewMsgCreateContract(creator string, dealId string, consumer string, desc s
 		Desc:     desc,
 		OwnerETA: ownerETA,
 		Expiry:   expiry,
+		Fees: 	  fees,
 	}
 }
 

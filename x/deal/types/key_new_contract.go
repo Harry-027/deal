@@ -14,10 +14,9 @@ func NewContractKey(
 	index string,
 ) []byte {
 	var key []byte
-
+	key = append(key, []byte(NewContractKeyPrefix)...)
 	indexBytes := []byte(index)
 	key = append(key, indexBytes...)
 	key = append(key, []byte("/")...)
-
 	return key
 }

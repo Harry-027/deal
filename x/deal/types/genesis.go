@@ -10,7 +10,9 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		DealCounter:     nil,
+		DealCounter: &DealCounter{
+			IdValue: uint64(1),
+		},
 		NewDealList:     []NewDeal{},
 		ContractCounter: nil,
 		NewContractList: []NewContract{},

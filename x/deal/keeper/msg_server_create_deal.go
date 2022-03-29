@@ -29,8 +29,16 @@ func (k msgServer) CreateDeal(goCtx context.Context, msg *types.MsgCreateDeal) (
 		return nil, err
 	}
 
+	k.Keeper.SetNewDeal(ctx, newDeal)
+
 	dealCounter.IdValue++
 	k.Keeper.SetDealCounter(ctx, dealCounter)
+
+	contractCounter := types.ContractCounter{
+		DealId:  dealId,
+		IdValue: 0,
+	}
+	k.Keeper.SetContractCounter(ctx, contractCounter)
 
 	return &types.MsgCreateDealResponse{
 		IdValue: dealId,

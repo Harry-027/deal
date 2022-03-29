@@ -8,7 +8,8 @@ import (
 
 // SetNewContract set a specific newContract in the store -  "NewContract/value/{dealId}"
 func (k Keeper) SetNewContract(ctx sdk.Context, newContract types.NewContract) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(newContract.DealId))
+	key := types.NewContractKey(newContract.DealId)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), key)
 	b := k.cdc.MustMarshal(&newContract)
 	store.Set(types.NewContractKey(
 		newContract.ContractId,

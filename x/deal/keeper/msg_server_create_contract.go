@@ -13,6 +13,15 @@ import (
 func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateContract) (*types.MsgCreateContractResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	deal, found := k.Keeper.GetNewDeal(ctx, msg.DealId)
+	if !found {
+		return nil, types.ErrDealNotFound
+	}
+
+	if msg.Creator != deal.Owner {
+		return nil, types.ErrInvalidOwner
+	}
+
 	contractCounter, found := k.Keeper.GetContractCounter(ctx, msg.DealId)
 	if !found {
 		return nil, types.ErrDealNotFound
