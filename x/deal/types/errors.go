@@ -20,4 +20,7 @@ var (
 	ErrPaymentFailed     = sdkerrors.Register(ModuleName, 1109, "Payment Failed")
 	ErrNotCommitted      = sdkerrors.Register(ModuleName, 1110, "Contract not yet committed")
 	ErrNotShipped        = sdkerrors.Register(ModuleName, 1111, "Order not yet shipped")
+	ErrNotApproved       = sdkerrors.Register(ModuleName, 1112, "Order not approved yet")
+	ErrRefund            = sdkerrors.Register(ModuleName, 1113, "Refund applicable after 20 mins delay")
+	ErrVendorETA		 = sdkerrors.Register(ModuleName, 1114, "Vendor ETA should be less than or equal to Owner ETA")
 )

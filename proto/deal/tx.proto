@@ -13,6 +13,7 @@ service Msg {
       rpc ApproveContract(MsgApproveContract) returns (MsgApproveContractResponse);
       rpc ShipOrder(MsgShipOrder) returns (MsgShipOrderResponse);
       rpc OrderDelivered(MsgOrderDelivered) returns (MsgOrderDeliveredResponse);
+      rpc CancelOrder(MsgCancelOrder) returns (MsgCancelOrderResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -82,6 +83,17 @@ message MsgOrderDelivered {
 }
 
 message MsgOrderDeliveredResponse {
+  string idValue = 1;
+  string contractStatus = 2;
+}
+
+message MsgCancelOrder {
+  string creator = 1;
+  string dealId = 2;
+  string contractId = 3;
+}
+
+message MsgCancelOrderResponse {
   string idValue = 1;
   string contractStatus = 2;
 }

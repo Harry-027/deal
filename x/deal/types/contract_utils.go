@@ -11,6 +11,7 @@ const (
 	APPROVED          = "APPROVED"
 	INDELIVERY        = "IN-DELIVERY"
 	DELIVERED         = "DELIVERED"
+	CANCELLED         = "CANCELLED"
 )
 
 func (newContract *NewContract) ValidateDesc() (err error) {

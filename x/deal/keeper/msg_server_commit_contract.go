@@ -40,6 +40,10 @@ func (k msgServer) CommitContract(goCtx context.Context, msg *types.MsgCommitCon
 		return nil, types.ErrInvalidETA
 	}
 
+	if (contract.OwnerETA / 2) < uint32(etaInMins) {
+		return nil, types.ErrVendorETA
+	} 
+
 	contract.Status = types.COMMITTED
 	contract.VendorETA = uint32(etaInMins)
 	k.Keeper.SetNewContract(ctx, contract)

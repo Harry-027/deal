@@ -54,12 +54,12 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 		contract.DeliveryDelay = uint32(deliveryTimeDelay)
 	}
 
-	timeTaken :=  uint32(deliveryActualTime.Sub(startTime).Minutes())
+	timeTaken := uint32(deliveryActualTime.Sub(startTime).Minutes())
 	vendorSlashPercent := uint64((contract.ShippingDelay / timeTaken) * 100)
 	ownerSlashPercent := uint64((contract.DeliveryDelay / timeTaken) * 100)
-	refundAmount := (vendorSlashPercent*contract.Fees) + (ownerSlashPercent*contract.Fees)
+	refundAmount := (vendorSlashPercent * contract.Fees) + (ownerSlashPercent * contract.Fees)
 	totalPay := contract.Fees - refundAmount
-	vendorPay := deal.Commission * totalPay 
+	vendorPay := deal.Commission * totalPay
 	ownerPay := totalPay - vendorPay
 
 	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sdk.AccAddress(contract.Consumer), sdk.NewCoins(contract.GetCoin(refundAmount)))
