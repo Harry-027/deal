@@ -1,0 +1,15 @@
+syntax = "proto3";
+package Harry027.deal.deal;
+
+option go_package = "github.com/Harry-027/deal/x/deal/types";
+
+message NewContract {
+  string dealId = 1;
+  string contractId = 2; 
+  string consumer = 3; 
+  string desc = 4; 
+  string ownerETA = 5; 
+  string vendorETA = 6; 
+  string expiry = 7; 
+}
+

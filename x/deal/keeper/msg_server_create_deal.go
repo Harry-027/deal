@@ -18,7 +18,7 @@ func (k msgServer) CreateDeal(goCtx context.Context, msg *types.MsgCreateDeal) (
 
 	dealId := strconv.FormatUint(dealCounter.IdValue, 10)
 	newDeal := types.NewDeal{
-		DealId:     dealCounter.IdValue,
+		DealId:     dealId,
 		Owner:      msg.Creator,
 		Vendor:     msg.Vendor,
 		Commission: msg.Commission,

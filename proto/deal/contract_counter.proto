@@ -4,6 +4,6 @@ package Harry027.deal.deal;
 option go_package = "github.com/Harry-027/deal/x/deal/types";
 
 message ContractCounter {
-  uint64 idValue = 1; 
-  string dealId = 2;
+  string dealId = 1;
+  uint64 idValue = 2;
 }

@@ -4,10 +4,9 @@ package Harry027.deal.deal;
 option go_package = "github.com/Harry-027/deal/x/deal/types";
 
 message NewDeal {
-  uint64 dealId = 1; 
+  string dealId = 1; 
   string owner = 2; 
   string vendor = 3; 
   uint64 commission = 4; 
-  
 }
 

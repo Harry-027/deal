@@ -8,5 +8,4 @@ option go_package = "github.com/Harry-027/deal/x/deal/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
 }

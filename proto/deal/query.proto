@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "deal/params.proto";
 import "deal/new_deal.proto";
+import "deal/new_contract.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/Harry-027/deal/x/deal/types";
@@ -24,6 +25,16 @@ service Query {
 	// Queries a list of NewDeal items.
 	rpc NewDealAll(QueryAllNewDealRequest) returns (QueryAllNewDealResponse) {
 		option (google.api.http).get = "/Harry-027/deal/deal/new_deal";
+	}
+
+// Queries a NewContract by index.
+	rpc NewContract(QueryGetNewContractRequest) returns (QueryGetNewContractResponse) {
+		option (google.api.http).get = "/Harry-027/deal/deal/new_contract/{dealId}/{contractId}";
+	}
+
+	// Queries a list of NewContract items.
+	rpc NewContractAll(QueryAllNewContractRequest) returns (QueryAllNewContractResponse) {
+		option (google.api.http).get = "/Harry-027/deal/deal/new_contract/{dealId}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -53,6 +64,25 @@ message QueryAllNewDealRequest {
 
 message QueryAllNewDealResponse {
 	repeated NewDeal newDeal = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetNewContractRequest {
+	  string dealId = 1;
+	  string contractId = 2;
+}
+
+message QueryGetNewContractResponse {
+	NewContract newContract = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllNewContractRequest {
+	string dealId = 1;
+	cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryAllNewContractResponse {
+	repeated NewContract newContract = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

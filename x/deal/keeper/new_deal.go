@@ -1,8 +1,6 @@
 package keeper
 
 import (
-	"strconv"
-
 	"github.com/Harry-027/deal/x/deal/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -13,7 +11,7 @@ func (k Keeper) SetNewDeal(ctx sdk.Context, newDeal types.NewDeal) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NewDealKeyPrefix))
 	b := k.cdc.MustMarshal(&newDeal)
 	store.Set(types.NewDealKey(
-		strconv.FormatUint(newDeal.DealId, 10),
+		newDeal.DealId,
 	), b)
 }
 

@@ -5,5 +5,4 @@ option go_package = "github.com/Harry-027/deal/x/deal/types";
 
 message DealCounter {
   uint64 idValue = 1; 
-  
 }

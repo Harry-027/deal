@@ -2,7 +2,6 @@ package types
 
 import (
 	"fmt"
-	"strconv"
 )
 
 // DefaultIndex is the default capability global index
@@ -14,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 		DealCounter:     nil,
 		NewDealList:     []NewDeal{},
 		ContractCounter: nil,
+		NewContractList: []NewContract{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -26,11 +26,20 @@ func (gs GenesisState) Validate() error {
 	newDealIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.NewDealList {
-		index := string(NewDealKey(strconv.FormatUint(elem.DealId, 10)))
+		index := elem.DealId
 		if _, ok := newDealIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for newDeal")
 		}
 		newDealIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in newContract
+	newContractIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.NewContractList {
+		if _, ok := newContractIndexMap[elem.ContractId]; ok {
+			return fmt.Errorf("duplicated index for newContract")
+		}
+		newContractIndexMap[elem.ContractId] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 
