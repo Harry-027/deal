@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"time"
 
 	"github.com/Harry-027/deal/x/deal/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,23 +16,11 @@ func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveC
 		return nil, types.ErrContractNotFound
 	}
 
-	if msg.Creator != contract.Consumer {
-		return nil, types.ErrInvalidConsumer
-	}
-
-	expiry, err := time.Parse(time.RFC3339, contract.Expiry)
+	err := msg.DealHandlerValidation(goCtx, &contract)
 	if err != nil {
-		panic("invalid expiry time")
+		return nil, err
 	}
-
-	if ctx.BlockTime().Before(expiry) {
-		return nil, types.ErrContractExpired
-	}
-
-	if contract.Status != types.COMMITTED {
-		return nil, types.ErrNotCommitted
-	}
-
+	
 	err = k.bank.SendCoinsFromAccountToModule(ctx, sdk.AccAddress(contract.Consumer), types.ModuleName, sdk.NewCoins(contract.GetCoin(contract.Fees)))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
