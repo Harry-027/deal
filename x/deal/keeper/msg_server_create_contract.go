@@ -40,6 +40,7 @@ func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateCon
 		Desc:       msg.Desc,
 		OwnerETA:   ownerETA.String(),
 		Expiry:     expiry.String(),
+		Fees: 		msg.Fees,
 	}
 
 	k.Keeper.SetNewContract(ctx, newContract)

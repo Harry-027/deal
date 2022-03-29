@@ -10,6 +10,7 @@ service Msg {
       rpc CreateDeal(MsgCreateDeal) returns (MsgCreateDealResponse);
       rpc CreateContract(MsgCreateContract) returns (MsgCreateContractResponse);
       rpc CommitContract(MsgCommitContract) returns (MsgCommitContractResponse);
+      rpc ApproveContract(MsgApproveContract) returns (MsgApproveContractResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -30,6 +31,7 @@ message MsgCreateContract {
   string desc = 4;
   string ownerETA = 5;
   string expiry = 6;
+  uint64 fees = 7;
 }
 
 message MsgCreateContractResponse {
@@ -45,6 +47,17 @@ message MsgCommitContract {
 }
 
 message MsgCommitContractResponse {
+  string idValue = 1;
+  string contractStatus = 2;
+}
+
+message MsgApproveContract {
+  string creator = 1;
+  string dealId = 2;
+  string contractId = 3;
+}
+
+message MsgApproveContractResponse {
   string idValue = 1;
   string contractStatus = 2;
 }

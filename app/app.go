@@ -354,6 +354,7 @@ func New(
 	)
 
 	app.DealKeeper = *dealmodulekeeper.NewKeeper(
+		app.BankKeeper,
 		appCodec,
 		keys[dealmoduletypes.StoreKey],
 		keys[dealmoduletypes.MemStoreKey],
