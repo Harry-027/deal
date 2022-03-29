@@ -30,7 +30,6 @@ func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateCon
 		return nil, types.ErrInvalidETA
 	}
 
-	ownerETA := ctx.BlockTime().Add(time.Duration(etaInMins) * time.Minute)
 	expiry := ctx.BlockTime().Add(time.Duration(expiryInMins) * time.Minute)
 
 	newContract := types.NewContract{
@@ -38,9 +37,10 @@ func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateCon
 		ContractId: contractId,
 		Consumer:   msg.Consumer,
 		Desc:       msg.Desc,
-		OwnerETA:   ownerETA.String(),
+		OwnerETA:   uint32(etaInMins),
 		Expiry:     expiry.String(),
-		Fees: 		msg.Fees,
+		Fees:       msg.Fees,
+		StartTime:  ctx.BlockTime().String(),
 	}
 
 	k.Keeper.SetNewContract(ctx, newContract)

@@ -9,7 +9,6 @@ const (
 	INITIATED  string = "INITIATED"
 	COMMITTED         = "COMMITTED"
 	APPROVED          = "APPROVED"
-	SHIPPED           = "SHIPPED"
 	INDELIVERY        = "IN-DELIVERY"
 	DELIVERED         = "DELIVERED"
 )
@@ -27,7 +26,7 @@ func (newContract *NewContract) GetConsumerAddress() (consumer sdk.AccAddress, e
 }
 
 func (newContract *NewContract) GetCoin() (fees sdk.Coin) {
-    return sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(int64(newContract.Fees)))
+	return sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(int64(newContract.Fees)))
 }
 
 func (newContract *NewContract) Validate() (err error) {

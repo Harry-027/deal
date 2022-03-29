@@ -36,7 +36,9 @@ func DealKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		memStoreKey,
 		"DealParams",
 	)
+
 	k := keeper.NewKeeper(
+		nil,
 		cdc,
 		storeKey,
 		memStoreKey,

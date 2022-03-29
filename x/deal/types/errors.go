@@ -17,6 +17,6 @@ var (
 	ErrContractExpired   = sdkerrors.Register(ModuleName, 1106, "Contract already expired")
 	ErrInvalidETA        = sdkerrors.Register(ModuleName, 1107, "Invalid ETA")
 	ErrDescLength        = sdkerrors.Register(ModuleName, 1108, "Desc length too large")
-	ErrPaymentFailed 	 = sdkerrors.Register(ModuleName, 1109, "Payment Failed")
-	ErrNotCommitted 	 = sdkerrors.Register(ModuleName, 1109, "Contract not yet committed")
+	ErrPaymentFailed     = sdkerrors.Register(ModuleName, 1109, "Payment Failed")
+	ErrNotCommitted      = sdkerrors.Register(ModuleName, 1110, "Contract not yet committed")
 )

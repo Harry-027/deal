@@ -2,14 +2,13 @@ package keeper
 
 import (
 	"context"
-	"strconv"
 	"time"
 
 	"github.com/Harry-027/deal/x/deal/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) CommitContract(goCtx context.Context, msg *types.MsgCommitContract) (*types.MsgCommitContractResponse, error) {
+func (k msgServer) ShipOrder(goCtx context.Context, msg *types.MsgShipOrder) (*types.MsgShipOrderResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	deal, found := k.Keeper.GetNewDeal(ctx, msg.DealId)
@@ -35,13 +34,18 @@ func (k msgServer) CommitContract(goCtx context.Context, msg *types.MsgCommitCon
 		return nil, types.ErrContractExpired
 	}
 
-	etaInMins, err := strconv.Atoi(msg.VendorETA)
+	startTime, err := time.Parse(time.RFC3339, contract.StartTime)
 	if err != nil {
-		return nil, types.ErrInvalidETA
+		panic("invalid start time")
 	}
 
-	contract.Status = types.COMMITTED
-	contract.VendorETA = uint32(etaInMins)
+	shippingExpectedTime := startTime.Add(time.Duration(contract.VendorETA))
+	shippingActualTime := ctx.BlockTime()
+	if shippingActualTime.After(shippingExpectedTime) {
+		shippingTimeDelay := shippingActualTime.Sub(shippingExpectedTime).Minutes()
+		contract.ShippingDelay = uint32(shippingTimeDelay)
+	}
+	contract.Status = types.INDELIVERY
 	k.Keeper.SetNewContract(ctx, contract)
-	return &types.MsgCommitContractResponse{IdValue: contract.ContractId, ContractStatus: contract.Status}, nil
+	return &types.MsgShipOrderResponse{IdValue: contract.ContractId, ContractStatus: contract.Status}, nil
 }

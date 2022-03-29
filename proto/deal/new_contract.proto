@@ -8,10 +8,12 @@ message NewContract {
   string contractId = 2; 
   string consumer = 3; 
   string desc = 4; 
-  string ownerETA = 5; 
-  string vendorETA = 6; 
+  uint32 ownerETA = 5; 
+  uint32 vendorETA = 6; 
   string status = 7;
   uint64 fees = 8;
   string expiry = 9; 
+  uint32 shippingDelay = 10;
+  string startTime = 11;
 }
 
