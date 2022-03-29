@@ -10,6 +10,7 @@ message NewContract {
   string desc = 4; 
   string ownerETA = 5; 
   string vendorETA = 6; 
-  string expiry = 7; 
+  string status = 7;
+  string expiry = 8; 
 }
 

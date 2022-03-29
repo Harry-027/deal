@@ -27,7 +27,7 @@ func CmdListNewContract() *cobra.Command {
 
 			params := &types.QueryAllNewContractRequest{
 				Pagination: pageReq,
-				DealId: dealId,
+				DealId:     dealId,
 			}
 
 			res, err := queryClient.NewContractAll(context.Background(), params)
@@ -59,7 +59,7 @@ func CmdShowNewContract() *cobra.Command {
 			contractId := args[1]
 
 			params := &types.QueryGetNewContractRequest{
-				DealId: dealId,
+				DealId:     dealId,
 				ContractId: contractId,
 			}
 

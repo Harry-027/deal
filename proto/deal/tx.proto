@@ -8,6 +8,7 @@ option go_package = "github.com/Harry-027/deal/x/deal/types";
 // Msg defines the Msg service.
 service Msg {
       rpc CreateDeal(MsgCreateDeal) returns (MsgCreateDealResponse);
+      rpc CreateContract(MsgCreateContract) returns (MsgCreateContractResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -19,6 +20,20 @@ message MsgCreateDeal {
 
 message MsgCreateDealResponse {
   string idValue = 1;
+}
+
+message MsgCreateContract {
+  string creator = 1;
+  string dealId = 2;
+  string consumer = 3;
+  string desc = 4;
+  string ownerETA = 5;
+  string expiry = 6;
+}
+
+message MsgCreateContractResponse {
+  string idValue = 1;
+  string contractStatus = 2;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

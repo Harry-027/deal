@@ -16,7 +16,7 @@ import (
 var _ = strconv.IntSize
 
 const (
-	DealId = "1" 
+	DealId = "1"
 )
 
 func createNNewContract(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.NewContract {

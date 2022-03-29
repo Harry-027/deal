@@ -20,7 +20,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 
 	for _, elem := range genState.ContractCounter {
 		k.SetContractCounter(ctx, *elem)
-		
+
 	}
 	// Set all the newContract
 	for _, elem := range genState.NewContractList {

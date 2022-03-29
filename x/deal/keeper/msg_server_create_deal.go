@@ -13,7 +13,7 @@ func (k msgServer) CreateDeal(goCtx context.Context, msg *types.MsgCreateDeal) (
 
 	dealCounter, found := k.Keeper.GetDealCounter(ctx)
 	if !found {
-		panic("NextGame not found")
+		panic("DealCounter not found")
 	}
 
 	dealId := strconv.FormatUint(dealCounter.IdValue, 10)

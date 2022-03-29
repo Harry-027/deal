@@ -10,5 +10,9 @@ import (
 var (
 	ErrInvalidOwner      = sdkerrors.Register(ModuleName, 1100, "Owner does not exists")
 	ErrInvalidVendor     = sdkerrors.Register(ModuleName, 1101, "Vendor does not exists")
-	ErrInvalidCommission = sdkerrors.Register(ModuleName, 1102, "Invalid commission")
+	ErrInvalidConsumer   = sdkerrors.Register(ModuleName, 1102, "Consumer does not exists")
+	ErrInvalidCommission = sdkerrors.Register(ModuleName, 1103, "Invalid commission")
+	ErrDealNotFound      = sdkerrors.Register(ModuleName, 1104, "Deal not found")
+	ErrInvalidETA        = sdkerrors.Register(ModuleName, 1105, "Invalid ETA")
+	ErrDescLength        = sdkerrors.Register(ModuleName, 1106, "Desc length too large")
 )

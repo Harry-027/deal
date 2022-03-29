@@ -39,7 +39,8 @@ func (k Keeper) RemoveNewContract(
 	ctx sdk.Context,
 	dealId string,
 	contractId string,
-) { storeKey := types.NewContractKey(dealId)
+) {
+	storeKey := types.NewContractKey(dealId)
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), storeKey)
 	store.Delete(types.NewContractKey(
 		contractId,
