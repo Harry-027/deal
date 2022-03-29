@@ -9,6 +9,7 @@ option go_package = "github.com/Harry-027/deal/x/deal/types";
 service Msg {
       rpc CreateDeal(MsgCreateDeal) returns (MsgCreateDealResponse);
       rpc CreateContract(MsgCreateContract) returns (MsgCreateContractResponse);
+      rpc CommitContract(MsgCommitContract) returns (MsgCommitContractResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -32,6 +33,18 @@ message MsgCreateContract {
 }
 
 message MsgCreateContractResponse {
+  string idValue = 1;
+  string contractStatus = 2;
+}
+
+message MsgCommitContract {
+  string creator = 1;
+  string dealId = 2;
+  string contractId = 3;
+  string vendorETA = 4;
+}
+
+message MsgCommitContractResponse {
   string idValue = 1;
   string contractStatus = 2;
 }

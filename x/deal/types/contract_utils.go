@@ -6,12 +6,12 @@ import (
 )
 
 const (
-    INITIATED string = "INITIATED"
-    COMMITTED = "COMMITTED"
-    APPROVED = "APPROVED"
-    SHIPPED = "SHIPPED"
-	INDELIVERY =  "IN-DELIVERY"
-	DELIVERED = "DELIVERED"
+	INITIATED  string = "INITIATED"
+	COMMITTED         = "COMMITTED"
+	APPROVED          = "APPROVED"
+	SHIPPED           = "SHIPPED"
+	INDELIVERY        = "IN-DELIVERY"
+	DELIVERED         = "DELIVERED"
 )
 
 func (newContract *NewContract) ValidateDesc() (err error) {
