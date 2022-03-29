@@ -29,7 +29,7 @@ func networkWithNewDealObjects(t *testing.T, n int) (*network.Network, []types.N
 
 	for i := 0; i < n; i++ {
 		newDeal := types.NewDeal{
-			DealId: uint64(i),
+			DealId: strconv.Itoa(i),
 		}
 		nullify.Fill(&newDeal)
 		state.NewDealList = append(state.NewDealList, newDeal)
@@ -57,7 +57,7 @@ func TestShowNewDeal(t *testing.T) {
 	}{
 		{
 			desc:    "found",
-			idIndex: strconv.FormatUint(objs[0].DealId, 10),
+			idIndex: objs[0].DealId,
 
 			args: common,
 			obj:  objs[0],

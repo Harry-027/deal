@@ -19,10 +19,10 @@ func TestGenesis(t *testing.T) {
 		},
 		NewDealList: []types.NewDeal{
 			{
-				DealId: 0,
+				DealId: "0",
 			},
 			{
-				DealId: 1,
+				DealId: "1",
 			},
 		},
 		ContractCounter: []*types.ContractCounter{
