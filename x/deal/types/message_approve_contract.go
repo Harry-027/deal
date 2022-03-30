@@ -2,7 +2,6 @@ package types
 
 import (
 	"context"
-	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -50,18 +49,8 @@ func (msg *MsgApproveContract) ValidateBasic() error {
 }
 
 func (msg *MsgApproveContract) DealHandlerValidation(goCtx context.Context, contract *NewContract) error {
-	ctx := sdk.UnwrapSDKContext(goCtx)
 	if msg.Creator != contract.Consumer {
 		return ErrInvalidConsumer
-	}
-
-	expiry, err := time.Parse(TIME_FORMAT, contract.Expiry)
-	if err != nil {
-		panic("invalid expiry time")
-	}
-
-	if ctx.BlockTime().Before(expiry) {
-		return ErrContractExpired
 	}
 
 	if contract.Status != COMMITTED {

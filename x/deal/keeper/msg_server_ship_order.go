@@ -25,13 +25,8 @@ func (k msgServer) ShipOrder(goCtx context.Context, msg *types.MsgShipOrder) (*t
 		return nil, types.ErrContractNotFound
 	}
 
-	expiry, err := time.Parse(types.TIME_FORMAT, contract.Expiry)
-	if err != nil {
-		panic("invalid expiry time")
-	}
-
-	if ctx.BlockTime().Before(expiry) {
-		return nil, types.ErrContractExpired
+	if contract.Status != types.APPROVED {
+		return nil, types.ErrNotApproved
 	}
 
 	startTime, err := time.Parse(types.TIME_FORMAT, contract.StartTime)

@@ -20,8 +20,13 @@ func (k msgServer) CancelOrder(goCtx context.Context, msg *types.MsgCancelOrder)
 	if err != nil {
 		return nil, err
 	}
-	
-	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sdk.AccAddress(contract.Consumer), sdk.NewCoins(contract.GetCoin(contract.Fees)))
+
+	consumerAddress, err := contract.GetConsumerAddress()
+	if err != nil {
+		panic("Invalid consumer address")
+	}
+
+	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, consumerAddress, sdk.NewCoins(contract.GetCoin(contract.Fees)))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
 	}

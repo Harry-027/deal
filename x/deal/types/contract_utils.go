@@ -6,14 +6,14 @@ import (
 )
 
 const (
-	INITIATED  string = "INITIATED"
-	COMMITTED         = "COMMITTED"
-	APPROVED          = "APPROVED"
-	INDELIVERY        = "IN-DELIVERY"
-	DELIVERED         = "DELIVERED"
-	CANCELLED         = "CANCELLED"
-	TIME_FORMAT       = "2006-01-02 15:04:05.999999999 +0000 UTC"
-	TOKEN 			  = "token"
+	INITIATED   string = "INITIATED"
+	COMMITTED          = "COMMITTED"
+	APPROVED           = "APPROVED"
+	INDELIVERY         = "IN-DELIVERY"
+	DELIVERED          = "DELIVERED"
+	CANCELLED          = "CANCELLED"
+	TIME_FORMAT        = "2006-01-02 15:04:05.999999999 +0000 UTC"
+	TOKEN              = "token"
 )
 
 func (newContract *NewContract) ValidateDesc() (err error) {

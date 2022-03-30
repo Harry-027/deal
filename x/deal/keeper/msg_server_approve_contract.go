@@ -20,8 +20,12 @@ func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveC
 	if err != nil {
 		return nil, err
 	}
-	
-	err = k.bank.SendCoinsFromAccountToModule(ctx, sdk.AccAddress(contract.Consumer), types.ModuleName, sdk.NewCoins(contract.GetCoin(contract.Fees)))
+
+	consumerAddress, err := contract.GetConsumerAddress()
+	if err != nil {
+		panic("Invalid consumer address")
+	}
+	err = k.bank.SendCoinsFromAccountToModule(ctx, consumerAddress, types.ModuleName, sdk.NewCoins(contract.GetCoin(contract.Fees)))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
 	}

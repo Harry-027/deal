@@ -17,7 +17,7 @@ func NewMsgCreateContract(creator string, dealId string, consumer string, desc s
 		Desc:     desc,
 		OwnerETA: ownerETA,
 		Expiry:   expiry,
-		Fees: 	  fees,
+		Fees:     fees,
 	}
 }
 

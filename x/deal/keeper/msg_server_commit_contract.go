@@ -31,7 +31,7 @@ func (k msgServer) CommitContract(goCtx context.Context, msg *types.MsgCommitCon
 		panic("invalid expiry time")
 	}
 
-	if ctx.BlockTime().Before(expiry) {
+	if ctx.BlockTime().After(expiry) {
 		return nil, types.ErrContractExpired
 	}
 

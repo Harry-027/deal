@@ -26,15 +26,6 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 		return nil, types.ErrInvalidConsumer
 	}
 
-	expiry, err := time.Parse(types.TIME_FORMAT, contract.Expiry)
-	if err != nil {
-		panic("invalid expiry time")
-	}
-
-	if ctx.BlockTime().Before(expiry) {
-		return nil, types.ErrContractExpired
-	}
-
 	if contract.Status != types.INDELIVERY {
 		return nil, types.ErrNotShipped
 	}
@@ -62,17 +53,33 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 	vendorPay := deal.Commission * totalPay
 	ownerPay := totalPay - vendorPay
 
-	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sdk.AccAddress(contract.Consumer), sdk.NewCoins(contract.GetCoin(refundAmount)))
+
+	consumerAddress, err := contract.GetConsumerAddress()
+	if err != nil {
+		panic("Invalid consumer address")
+	}
+
+	ownerAddress, err := deal.GetOwnerAddress()
+	if err != nil {
+		panic("Invalid owner address")
+	}
+
+	vendorAddress, err := deal.GetVendorAddress()
+	if err != nil {
+		panic("Invalid vendor address")
+	}
+
+	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, consumerAddress, sdk.NewCoins(contract.GetCoin(refundAmount)))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
 	}
 
-	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sdk.AccAddress(deal.Owner), sdk.NewCoins(contract.GetCoin(ownerPay)))
+	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, ownerAddress, sdk.NewCoins(contract.GetCoin(ownerPay)))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
 	}
 
-	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sdk.AccAddress(deal.Vendor), sdk.NewCoins(contract.GetCoin(vendorPay)))
+	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, vendorAddress, sdk.NewCoins(contract.GetCoin(vendorPay)))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
 	}

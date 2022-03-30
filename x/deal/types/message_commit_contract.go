@@ -14,7 +14,7 @@ func NewMsgCommitContract(creator, dealId, contractId, vendorETA string) *MsgCom
 		Creator:    creator,
 		DealId:     dealId,
 		ContractId: contractId,
-		VendorETA: vendorETA,
+		VendorETA:  vendorETA,
 	}
 }
 
