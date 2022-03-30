@@ -115,5 +115,17 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 
 	contract.Status = types.DELIVERED
 	k.Keeper.SetNewContract(ctx, contract)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.DELIVERED),
+			sdk.NewAttribute(types.IDVALUE, contract.ContractId),
+			sdk.NewAttribute(types.CONSUMER, contract.Consumer),
+			sdk.NewAttribute(types.OWNER, deal.Owner),
+			sdk.NewAttribute(types.VENDOR, deal.Vendor),
+		),
+	)
+
 	return &types.MsgOrderDeliveredResponse{IdValue: contract.ContractId, ContractStatus: contract.Status}, nil
 }

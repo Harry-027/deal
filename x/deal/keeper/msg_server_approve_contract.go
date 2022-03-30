@@ -33,5 +33,13 @@ func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveC
 	contract.Status = types.APPROVED
 	k.Keeper.SetNewContract(ctx, contract)
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.APPROVED),
+			sdk.NewAttribute(types.IDVALUE, contract.ContractId),
+		),
+	)
+
 	return &types.MsgApproveContractResponse{}, nil
 }

@@ -14,6 +14,13 @@ const (
 	CANCELLED          = "CANCELLED"
 	TIME_FORMAT        = "2006-01-02 15:04:05.999999999 +0000 UTC"
 	TOKEN              = "token"
+	IDVALUE            = "IdValue"
+	OWNER              = "Owner"
+	VENDOR             = "Vendor"
+	CONSUMER           = "Consumer"
+	START_TIME         = "StartTime"
+	VENDOR_ETA         = "VendorETA"
+	OWNER_ETA          = "OwnerETA"
 )
 
 func (newContract *NewContract) ValidateDesc() (err error) {

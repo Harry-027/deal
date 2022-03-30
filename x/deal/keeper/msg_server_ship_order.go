@@ -42,5 +42,14 @@ func (k msgServer) ShipOrder(goCtx context.Context, msg *types.MsgShipOrder) (*t
 	}
 	contract.Status = types.INDELIVERY
 	k.Keeper.SetNewContract(ctx, contract)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.INDELIVERY),
+			sdk.NewAttribute(types.IDVALUE, contract.ContractId),
+		),
+	)
+
 	return &types.MsgShipOrderResponse{IdValue: contract.ContractId, ContractStatus: contract.Status}, nil
 }

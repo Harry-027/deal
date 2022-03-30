@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-
 	"github.com/Harry-027/deal/x/deal/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -39,6 +38,14 @@ func (k msgServer) CancelOrder(goCtx context.Context, msg *types.MsgCancelOrder)
 
 	contract.Status = types.CANCELLED
 	k.Keeper.SetNewContract(ctx, contract)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.CANCELLED),
+			sdk.NewAttribute(types.IDVALUE, contract.ContractId),
+		),
+	)
 
 	return &types.MsgCancelOrderResponse{IdValue: contract.ContractId, ContractStatus: contract.Status}, nil
 }

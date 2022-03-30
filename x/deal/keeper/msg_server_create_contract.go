@@ -57,5 +57,14 @@ func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateCon
 	contractCounter.IdValue++
 	k.Keeper.SetContractCounter(ctx, contractCounter)
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.INITIATED),
+			sdk.NewAttribute(types.IDVALUE, newContract.ContractId),
+			sdk.NewAttribute(types.START_TIME, newContract.StartTime),
+		),
+	)
+
 	return &types.MsgCreateContractResponse{IdValue: contractId, ContractStatus: types.INITIATED}, nil
 }

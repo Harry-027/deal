@@ -47,5 +47,15 @@ func (k msgServer) CommitContract(goCtx context.Context, msg *types.MsgCommitCon
 	contract.Status = types.COMMITTED
 	contract.VendorETA = uint32(etaInMins)
 	k.Keeper.SetNewContract(ctx, contract)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.COMMITTED),
+			sdk.NewAttribute(types.IDVALUE, contract.ContractId),
+			sdk.NewAttribute(types.VENDOR_ETA, strconv.FormatUint(uint64(contract.VendorETA), 10)),
+		),
+	)
+
 	return &types.MsgCommitContractResponse{IdValue: contract.ContractId, ContractStatus: contract.Status}, nil
 }
