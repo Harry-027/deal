@@ -116,6 +116,7 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 	contract.Status = types.DELIVERED
 	k.Keeper.SetNewContract(ctx, contract)
 
+	ctx.GasMeter().ConsumeGas(types.SETTLEMENT_GAS, "Order delivered")
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),

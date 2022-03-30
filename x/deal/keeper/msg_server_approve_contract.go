@@ -33,6 +33,7 @@ func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveC
 	contract.Status = types.APPROVED
 	k.Keeper.SetNewContract(ctx, contract)
 
+	ctx.GasMeter().ConsumeGas(types.PROCESS_GAS, "Approve Contract")
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),

@@ -43,6 +43,7 @@ func (k msgServer) ShipOrder(goCtx context.Context, msg *types.MsgShipOrder) (*t
 	contract.Status = types.INDELIVERY
 	k.Keeper.SetNewContract(ctx, contract)
 
+	ctx.GasMeter().ConsumeGas(types.PROCESS_GAS, "Order shipped")
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),

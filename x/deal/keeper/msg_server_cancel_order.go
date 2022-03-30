@@ -39,6 +39,7 @@ func (k msgServer) CancelOrder(goCtx context.Context, msg *types.MsgCancelOrder)
 	contract.Status = types.CANCELLED
 	k.Keeper.SetNewContract(ctx, contract)
 
+	ctx.GasMeter().ConsumeGas(types.PROCESS_GAS, "Cancel Contract")
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),

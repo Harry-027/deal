@@ -40,6 +40,7 @@ func (k msgServer) CreateDeal(goCtx context.Context, msg *types.MsgCreateDeal) (
 	}
 	k.Keeper.SetContractCounter(ctx, contractCounter)
 
+	ctx.GasMeter().ConsumeGas(types.CREATE_GAS, "Create Deal")
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),

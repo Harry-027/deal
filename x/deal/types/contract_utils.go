@@ -6,21 +6,24 @@ import (
 )
 
 const (
-	INITIATED   string = "INITIATED"
-	COMMITTED          = "COMMITTED"
-	APPROVED           = "APPROVED"
-	INDELIVERY         = "IN-DELIVERY"
-	DELIVERED          = "DELIVERED"
-	CANCELLED          = "CANCELLED"
-	TIME_FORMAT        = "2006-01-02 15:04:05.999999999 +0000 UTC"
-	TOKEN              = "token"
-	IDVALUE            = "IdValue"
-	OWNER              = "Owner"
-	VENDOR             = "Vendor"
-	CONSUMER           = "Consumer"
-	START_TIME         = "StartTime"
-	VENDOR_ETA         = "VendorETA"
-	OWNER_ETA          = "OwnerETA"
+	INITIATED      string = "INITIATED"
+	COMMITTED             = "COMMITTED"
+	APPROVED              = "APPROVED"
+	INDELIVERY            = "IN-DELIVERY"
+	DELIVERED             = "DELIVERED"
+	CANCELLED             = "CANCELLED"
+	TIME_FORMAT           = "2006-01-02 15:04:05.999999999 +0000 UTC"
+	TOKEN                 = "token"
+	IDVALUE               = "IdValue"
+	OWNER                 = "Owner"
+	VENDOR                = "Vendor"
+	CONSUMER              = "Consumer"
+	START_TIME            = "StartTime"
+	VENDOR_ETA            = "VendorETA"
+	OWNER_ETA             = "OwnerETA"
+	CREATE_GAS     uint64 = 200
+	PROCESS_GAS    uint64 = 100
+	SETTLEMENT_GAS uint64 = 300
 )
 
 func (newContract *NewContract) ValidateDesc() (err error) {

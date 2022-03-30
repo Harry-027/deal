@@ -48,6 +48,7 @@ func (k msgServer) CommitContract(goCtx context.Context, msg *types.MsgCommitCon
 	contract.VendorETA = uint32(etaInMins)
 	k.Keeper.SetNewContract(ctx, contract)
 
+	ctx.GasMeter().ConsumeGas(types.PROCESS_GAS, "Commit Contract")
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
