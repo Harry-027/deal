@@ -55,7 +55,7 @@ func (msg *MsgApproveContract) DealHandlerValidation(goCtx context.Context, cont
 		return ErrInvalidConsumer
 	}
 
-	expiry, err := time.Parse(time.RFC3339, contract.Expiry)
+	expiry, err := time.Parse(TIME_FORMAT, contract.Expiry)
 	if err != nil {
 		panic("invalid expiry time")
 	}

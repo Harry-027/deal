@@ -26,7 +26,7 @@ func (k msgServer) CommitContract(goCtx context.Context, msg *types.MsgCommitCon
 		return nil, types.ErrContractNotFound
 	}
 
-	expiry, err := time.Parse(time.RFC3339, contract.Expiry)
+	expiry, err := time.Parse(types.TIME_FORMAT, contract.Expiry)
 	if err != nil {
 		panic("invalid expiry time")
 	}
@@ -42,7 +42,7 @@ func (k msgServer) CommitContract(goCtx context.Context, msg *types.MsgCommitCon
 
 	if (contract.OwnerETA / 2) < uint32(etaInMins) {
 		return nil, types.ErrVendorETA
-	} 
+	}
 
 	contract.Status = types.COMMITTED
 	contract.VendorETA = uint32(etaInMins)

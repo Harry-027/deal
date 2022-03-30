@@ -9,11 +9,12 @@ const TypeMsgCommitContract = "commit_contract"
 
 var _ sdk.Msg = &MsgCommitContract{}
 
-func NewMsgCommitContract(creator string, dealId string, contractId string) *MsgCommitContract {
+func NewMsgCommitContract(creator, dealId, contractId, vendorETA string) *MsgCommitContract {
 	return &MsgCommitContract{
 		Creator:    creator,
 		DealId:     dealId,
 		ContractId: contractId,
+		VendorETA: vendorETA,
 	}
 }
 

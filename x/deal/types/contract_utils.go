@@ -12,6 +12,8 @@ const (
 	INDELIVERY        = "IN-DELIVERY"
 	DELIVERED         = "DELIVERED"
 	CANCELLED         = "CANCELLED"
+	TIME_FORMAT       = "2006-01-02 15:04:05.999999999 +0000 UTC"
+	TOKEN 			  = "token"
 )
 
 func (newContract *NewContract) ValidateDesc() (err error) {
@@ -27,7 +29,7 @@ func (newContract *NewContract) GetConsumerAddress() (consumer sdk.AccAddress, e
 }
 
 func (newContract *NewContract) GetCoin(amount uint64) (fees sdk.Coin) {
-	return sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(int64(amount)))
+	return sdk.NewCoin(TOKEN, sdk.NewInt(int64(amount)))
 }
 
 func (newContract *NewContract) Validate() (err error) {

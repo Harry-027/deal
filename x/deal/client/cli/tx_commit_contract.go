@@ -14,13 +14,13 @@ var _ = strconv.Itoa(0)
 
 func CmdCommitContract() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "commit-contract [deal-id] [contract-id]",
+		Use:   "commit-contract [deal-id] [contract-id] [ETA]",
 		Short: "Broadcast message commitContract",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDealId := args[0]
 			argContractId := args[1]
-
+			argVendorETA := args[2]
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -30,6 +30,7 @@ func CmdCommitContract() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				argDealId,
 				argContractId,
+				argVendorETA,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

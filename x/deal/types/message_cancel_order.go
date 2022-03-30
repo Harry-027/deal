@@ -59,7 +59,7 @@ func (msg *MsgCancelOrder) DealHandlerValidation(goCtx context.Context, contract
 		return ErrNotApproved
 	}
 
-	startTime, err := time.Parse(time.RFC3339, contract.StartTime)
+	startTime, err := time.Parse(TIME_FORMAT, contract.StartTime)
 	if err != nil {
 		panic("invalid start time")
 	}

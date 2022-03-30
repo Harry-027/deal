@@ -25,7 +25,7 @@ func (k msgServer) ShipOrder(goCtx context.Context, msg *types.MsgShipOrder) (*t
 		return nil, types.ErrContractNotFound
 	}
 
-	expiry, err := time.Parse(time.RFC3339, contract.Expiry)
+	expiry, err := time.Parse(types.TIME_FORMAT, contract.Expiry)
 	if err != nil {
 		panic("invalid expiry time")
 	}
@@ -34,7 +34,7 @@ func (k msgServer) ShipOrder(goCtx context.Context, msg *types.MsgShipOrder) (*t
 		return nil, types.ErrContractExpired
 	}
 
-	startTime, err := time.Parse(time.RFC3339, contract.StartTime)
+	startTime, err := time.Parse(types.TIME_FORMAT, contract.StartTime)
 	if err != nil {
 		panic("invalid start time")
 	}
