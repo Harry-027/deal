@@ -11,6 +11,7 @@ import (
 
 func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDelivered) (*types.MsgOrderDeliveredResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
 
 	deal, found := k.Keeper.GetNewDeal(ctx, msg.DealId)
 	if !found {
@@ -26,7 +27,7 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 		return nil, types.ErrInvalidConsumer
 	}
 
-	if contract.Status != types.INDELIVERY {
+	if contract.Status != types.INDELIVERY || contract.Status == types.DELIVERED {
 		return nil, types.ErrNotShipped
 	}
 
@@ -37,22 +38,50 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 
 	deliveryExpectedTime := startTime.Add(time.Duration(contract.OwnerETA))
 	deliveryActualTime := ctx.BlockTime()
+
+	logger.Debug("deliveryExpectedTime :: ", deliveryExpectedTime)
+	logger.Debug("deliveryActualTime :: ", deliveryActualTime)
+
 	if deliveryActualTime.After(deliveryExpectedTime) {
 		deliveryTimeDelay := uint32(deliveryActualTime.Sub(deliveryExpectedTime).Minutes())
+		logger.Debug("deliveryTimeDelay :: ", deliveryTimeDelay)
 		if contract.ShippingDelay != 0 {
 			deliveryTimeDelay = deliveryTimeDelay - contract.ShippingDelay
+			logger.Debug("deliveryTimeDelay after subtracting shipping delay", deliveryTimeDelay)
 		}
 		contract.DeliveryDelay = uint32(deliveryTimeDelay)
 	}
 
 	timeTaken := uint32(deliveryActualTime.Sub(startTime).Minutes())
-	vendorSlashPercent := uint64((contract.ShippingDelay / timeTaken) * 100)
-	ownerSlashPercent := uint64((contract.DeliveryDelay / timeTaken) * 100)
-	refundAmount := (vendorSlashPercent * contract.Fees) + (ownerSlashPercent * contract.Fees)
-	totalPay := contract.Fees - refundAmount
-	vendorPay := deal.Commission * totalPay
-	ownerPay := totalPay - vendorPay
+	logger.Debug("timeTaken :: ", timeTaken)
 
+	var refundAmount uint64 = 0
+
+	if timeTaken != 0 {
+		vendorSlashPercent := uint64(contract.ShippingDelay / timeTaken)
+		logger.Debug("vendorSlashPercent :: ", vendorSlashPercent)
+
+		ownerSlashPercent := uint64(contract.DeliveryDelay / timeTaken)
+		logger.Debug("ownerSlashPercent :: ", ownerSlashPercent)
+
+		refundAmount = (vendorSlashPercent * contract.Fees) + (ownerSlashPercent * contract.Fees)
+		logger.Debug("refundAmount :: ", refundAmount)
+	}
+
+	totalPay := contract.Fees - refundAmount
+	logger.Debug("TotalPay :: ", totalPay)
+
+	moduleAccount := k.auth.GetModuleAddress(types.ModuleName)
+	moduleBalance := k.bank.GetBalance(ctx, moduleAccount, types.TOKEN)
+	if moduleBalance.IsLT(contract.GetCoin(totalPay)) {
+		panic("Escrow account insufficient balance")
+	}
+
+	vendorPay := uint64(0.01 * float64(deal.Commission*totalPay))
+	logger.Debug("vendorPay :: ", vendorPay)
+
+	ownerPay := totalPay - vendorPay
+	logger.Debug("ownerPay :: ", ownerPay)
 
 	consumerAddress, err := contract.GetConsumerAddress()
 	if err != nil {
@@ -85,5 +114,6 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 	}
 
 	contract.Status = types.DELIVERED
+	k.Keeper.SetNewContract(ctx, contract)
 	return &types.MsgOrderDeliveredResponse{IdValue: contract.ContractId, ContractStatus: contract.Status}, nil
 }

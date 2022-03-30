@@ -160,7 +160,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		dealmoduletypes.ModuleName: 	{authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		dealmoduletypes.ModuleName:     {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -355,6 +355,7 @@ func New(
 	)
 
 	app.DealKeeper = *dealmodulekeeper.NewKeeper(
+		app.AccountKeeper,
 		app.BankKeeper,
 		appCodec,
 		keys[dealmoduletypes.StoreKey],

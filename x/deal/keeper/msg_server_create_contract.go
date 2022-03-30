@@ -50,6 +50,7 @@ func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateCon
 		Expiry:     expiry.UTC().Format(types.TIME_FORMAT),
 		Fees:       msg.Fees,
 		StartTime:  ctx.BlockTime().UTC().Format(types.TIME_FORMAT),
+		Status:     types.INITIATED,
 	}
 
 	k.Keeper.SetNewContract(ctx, newContract)

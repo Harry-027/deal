@@ -67,7 +67,7 @@ func (msg *MsgCancelOrder) DealHandlerValidation(goCtx context.Context, contract
 	deliveryExpectedTime := startTime.Add(time.Duration(contract.OwnerETA))
 	timeLimit := uint32(ctx.BlockTime().Sub(deliveryExpectedTime).Minutes())
 	if timeLimit < 20 {
-		return ErrRefund
+		return sdkerrors.Wrapf(ErrRefund, "Elapsed delay time in mins %d", timeLimit)
 	}
 	return nil
 }
