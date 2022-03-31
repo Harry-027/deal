@@ -27,6 +27,7 @@ func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateCon
 		return nil, types.ErrDealNotFound
 	}
 
+	contractCounter.IdValue++
 	contractId := strconv.FormatUint(contractCounter.IdValue, 10)
 
 	etaInMins, err := strconv.Atoi(msg.OwnerETA)
@@ -54,7 +55,6 @@ func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateCon
 	}
 
 	k.Keeper.SetNewContract(ctx, newContract)
-	contractCounter.IdValue++
 	k.Keeper.SetContractCounter(ctx, contractCounter)
 
 	ctx.GasMeter().ConsumeGas(types.CREATE_GAS, "Create Contract")
