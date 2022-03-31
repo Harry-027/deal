@@ -26,31 +26,31 @@ var (
 const (
 	opWeightMsgCreateDeal = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgCreateDeal int = 100
+	defaultWeightMsgCreateDeal int = 90
 
 	opWeightMsgCreateContract = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgCreateContract int = 100
+	defaultWeightMsgCreateContract int = 90
 
 	opWeightMsgCommitContract = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgCommitContract int = 100
+	defaultWeightMsgCommitContract int = 50
 
 	opWeightMsgApproveContract = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgApproveContract int = 100
+	defaultWeightMsgApproveContract int = 40
 
 	opWeightMsgShipOrder = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgShipOrder int = 100
+	defaultWeightMsgShipOrder int = 40
 
 	opWeightMsgOrderDelivered = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgOrderDelivered int = 100
+	defaultWeightMsgOrderDelivered int = 40
 
 	opWeightMsgCancelOrder = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgCancelOrder int = 100
+	defaultWeightMsgCancelOrder int = 20
 
 	// this line is used by starport scaffolding # simapp/module/const
 )
@@ -61,7 +61,11 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	for i, acc := range simState.Accounts {
 		accs[i] = acc.Address.String()
 	}
+	
 	dealGenesis := types.GenesisState{
+		DealCounter: &types.DealCounter{
+			IdValue: 1,
+		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&dealGenesis)
