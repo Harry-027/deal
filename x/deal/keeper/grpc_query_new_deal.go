@@ -11,6 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// NewDealAll is the query handler to fetch all the new deals
 func (k Keeper) NewDealAll(c context.Context, req *types.QueryAllNewDealRequest) (*types.QueryAllNewDealResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -39,6 +40,7 @@ func (k Keeper) NewDealAll(c context.Context, req *types.QueryAllNewDealRequest)
 	return &types.QueryAllNewDealResponse{NewDeal: newDeals, Pagination: pageRes}, nil
 }
 
+// NewDealAll is the query handler to fetch the deal details for a given dealId
 func (k Keeper) NewDeal(c context.Context, req *types.QueryGetNewDealRequest) (*types.QueryGetNewDealResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

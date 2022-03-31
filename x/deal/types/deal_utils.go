@@ -5,6 +5,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+// utility funcs
+
 func (newDeal *NewDeal) GetOwnerAddress() (owner sdk.AccAddress, err error) {
 	owner, errInvalidOwner := sdk.AccAddressFromBech32(newDeal.Owner)
 	return owner, sdkerrors.Wrapf(errInvalidOwner, ErrInvalidOwner.Error(), newDeal.Owner)

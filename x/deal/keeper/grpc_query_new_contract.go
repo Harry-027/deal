@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	"github.com/Harry-027/deal/x/deal/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -10,6 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// NewContractAll is the query handler to fetch all the contracts under given dealId
 func (k Keeper) NewContractAll(c context.Context, req *types.QueryAllNewContractRequest) (*types.QueryAllNewContractResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -41,6 +43,7 @@ func (k Keeper) NewContractAll(c context.Context, req *types.QueryAllNewContract
 	return &types.QueryAllNewContractResponse{NewContract: newContracts, Pagination: pageRes}, nil
 }
 
+// NewContract is the query handler to fatch the contract for a given specific dealId and contractId
 func (k Keeper) NewContract(c context.Context, req *types.QueryGetNewContractRequest) (*types.QueryGetNewContractResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

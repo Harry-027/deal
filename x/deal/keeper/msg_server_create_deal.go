@@ -24,6 +24,7 @@ func (k msgServer) CreateDeal(goCtx context.Context, msg *types.MsgCreateDeal) (
 		Commission: msg.Commission,
 	}
 
+	// validate before processing the message
 	err := newDeal.Validate()
 	if err != nil {
 		return nil, err
@@ -34,6 +35,7 @@ func (k msgServer) CreateDeal(goCtx context.Context, msg *types.MsgCreateDeal) (
 	dealCounter.IdValue++
 	k.Keeper.SetDealCounter(ctx, dealCounter)
 
+	// Set the new contract counter for a newly created deal
 	contractCounter := types.ContractCounter{
 		DealId:  dealId,
 		IdValue: 0,

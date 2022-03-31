@@ -15,7 +15,7 @@ var (
 	ErrDealNotFound      = sdkerrors.Register(ModuleName, 1104, "Deal not found")
 	ErrContractNotFound  = sdkerrors.Register(ModuleName, 1105, "Contract not found")
 	ErrContractExpired   = sdkerrors.Register(ModuleName, 1106, "Contract already expired")
-	ErrInvalidETA        = sdkerrors.Register(ModuleName, 1107, "Invalid ETA")
+	ErrInvalidTime        = sdkerrors.Register(ModuleName, 1107, "Invalid Time")
 	ErrDescLength        = sdkerrors.Register(ModuleName, 1108, "Desc length too large")
 	ErrPaymentFailed     = sdkerrors.Register(ModuleName, 1109, "Payment Failed")
 	ErrNotCommitted      = sdkerrors.Register(ModuleName, 1110, "Contract not in commit stage")

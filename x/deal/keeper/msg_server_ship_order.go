@@ -8,6 +8,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+// ShipOrder is the tx handler for shipOrder messages from Vendor
 func (k msgServer) ShipOrder(goCtx context.Context, msg *types.MsgShipOrder) (*types.MsgShipOrderResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -16,6 +17,7 @@ func (k msgServer) ShipOrder(goCtx context.Context, msg *types.MsgShipOrder) (*t
 		return nil, types.ErrDealNotFound
 	}
 
+	// validate if the tx is from vendor
 	if msg.Creator != deal.Vendor {
 		return nil, types.ErrInvalidVendor
 	}
@@ -34,12 +36,14 @@ func (k msgServer) ShipOrder(goCtx context.Context, msg *types.MsgShipOrder) (*t
 		panic("invalid start time")
 	}
 
+	// Calculate shipping delay if any (will be used later to calculate delay penalty)
 	shippingExpectedTime := startTime.Add(time.Duration(contract.VendorETA))
 	shippingActualTime := ctx.BlockTime()
 	if shippingActualTime.After(shippingExpectedTime) {
 		shippingTimeDelay := shippingActualTime.Sub(shippingExpectedTime).Minutes()
 		contract.ShippingDelay = uint32(shippingTimeDelay)
 	}
+	// mark the contract status as in delivery
 	contract.Status = types.INDELIVERY
 	k.Keeper.SetNewContract(ctx, contract)
 

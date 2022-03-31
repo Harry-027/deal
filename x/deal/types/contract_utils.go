@@ -5,12 +5,14 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+// utility func & vars
+
 const (
 	INITIATED      string = "INITIATED"
 	COMMITTED             = "COMMITTED"
 	APPROVED              = "APPROVED"
 	INDELIVERY            = "IN-DELIVERY"
-	DELIVERED             = "DELIVERED"
+	COMPLETED             = "COMPLETED"
 	CANCELLED             = "CANCELLED"
 	TIME_FORMAT           = "2006-01-02 15:04:05.999999999 +0000 UTC"
 	TOKEN                 = "token"

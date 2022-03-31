@@ -10,6 +10,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+// CreateContract is the tx handler to handle create contract messages
 func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateContract) (*types.MsgCreateContractResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -18,6 +19,7 @@ func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateCon
 		return nil, types.ErrDealNotFound
 	}
 
+	// validate if the tx came from owner
 	if msg.Creator != deal.Owner {
 		return nil, types.ErrInvalidOwner
 	}
@@ -32,16 +34,17 @@ func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateCon
 
 	etaInMins, err := strconv.Atoi(msg.OwnerETA)
 	if err != nil {
-		return nil, types.ErrInvalidETA
+		return nil, types.ErrInvalidTime
 	}
 
 	expiryInMins, err := strconv.Atoi(msg.Expiry)
 	if err != nil {
-		return nil, types.ErrInvalidETA
+		return nil, types.ErrInvalidTime
 	}
 
 	expiry := ctx.BlockTime().Add(time.Duration(expiryInMins) * time.Minute)
 
+	// create a new contract under the given dealId
 	newContract := types.NewContract{
 		DealId:     msg.DealId,
 		ContractId: contractId,

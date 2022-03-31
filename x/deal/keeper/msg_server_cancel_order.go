@@ -7,6 +7,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+// CancelOrder is the tx handler for handling cancel order messages
 func (k msgServer) CancelOrder(goCtx context.Context, msg *types.MsgCancelOrder) (*types.MsgCancelOrderResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -25,17 +26,20 @@ func (k msgServer) CancelOrder(goCtx context.Context, msg *types.MsgCancelOrder)
 		panic("Invalid consumer address")
 	}
 
+	// Validate is the escrow account has enough balance to process the refund
 	moduleAccount := k.auth.GetModuleAddress(types.ModuleName)
 	moduleBalance := k.bank.GetBalance(ctx, moduleAccount, types.TOKEN)
 	if moduleBalance.IsLT(contract.GetCoin(contract.Fees)) {
 		panic("Escrow account insufficient balance")
 	}
 
+	// Send coins from contract account to the consumer account
 	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, consumerAddress, sdk.NewCoins(contract.GetCoin(contract.Fees)))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
 	}
 
+	// mark contract status as cancelled
 	contract.Status = types.CANCELLED
 	k.Keeper.SetNewContract(ctx, contract)
 

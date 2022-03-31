@@ -11,6 +11,7 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 )
 
+// concrete keeper type for deal module also includes bank & account keeper interface for handling fund related transactions
 type (
 	Keeper struct {
 		auth       types.AccountKeeper

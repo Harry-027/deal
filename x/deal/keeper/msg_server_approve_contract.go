@@ -8,6 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+// ApproveContract is the tx handler for handling approve contract messages
 func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveContract) (*types.MsgApproveContractResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -16,11 +17,13 @@ func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveC
 		return nil, types.ErrContractNotFound
 	}
 
+	// handle validation before processing
 	err := msg.DealHandlerValidation(goCtx, &contract)
 	if err != nil {
 		return nil, err
 	}
 
+	// store funds from user account to module escrow account and approve the contract
 	consumerAddress, err := contract.GetConsumerAddress()
 	if err != nil {
 		panic("Invalid consumer address")
@@ -33,7 +36,10 @@ func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveC
 	contract.Status = types.APPROVED
 	k.Keeper.SetNewContract(ctx, contract)
 
+	// consume the gas to incentivize validators
 	ctx.GasMeter().ConsumeGas(types.PROCESS_GAS, "Approve Contract")
+
+	// emit custom event that clients can subscribe to
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
@@ -42,5 +48,8 @@ func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveC
 		),
 	)
 
-	return &types.MsgApproveContractResponse{}, nil
+	return &types.MsgApproveContractResponse{
+		IdValue:        contract.ContractId,
+		ContractStatus: contract.Status,
+	}, nil
 }

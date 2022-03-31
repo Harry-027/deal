@@ -18,6 +18,7 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 		return nil, types.ErrDealNotFound
 	}
 
+	// validate before processing the message
 	contract, found := k.Keeper.GetNewContract(ctx, msg.DealId, msg.ContractId)
 	if !found {
 		return nil, types.ErrContractNotFound
@@ -27,7 +28,7 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 		return nil, types.ErrInvalidConsumer
 	}
 
-	if contract.Status != types.INDELIVERY || contract.Status == types.DELIVERED {
+	if contract.Status != types.INDELIVERY || contract.Status == types.COMPLETED {
 		return nil, types.ErrNotShipped
 	}
 
@@ -42,10 +43,12 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 	logger.Debug("deliveryExpectedTime :: ", deliveryExpectedTime)
 	logger.Debug("deliveryActualTime :: ", deliveryActualTime)
 
+	// calculate the delivery delay in case if any
 	if deliveryActualTime.After(deliveryExpectedTime) {
 		deliveryTimeDelay := uint32(deliveryActualTime.Sub(deliveryExpectedTime).Minutes())
 		logger.Debug("deliveryTimeDelay :: ", deliveryTimeDelay)
 		if contract.ShippingDelay != 0 {
+			// subtract the shipping delay if any
 			deliveryTimeDelay = deliveryTimeDelay - contract.ShippingDelay
 			logger.Debug("deliveryTimeDelay after subtracting shipping delay", deliveryTimeDelay)
 		}
@@ -57,6 +60,7 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 
 	var refundAmount uint64 = 0
 
+	// calculate the penalty for late delivery/shipping for owner & vendor respectively
 	if timeTaken != 0 {
 		vendorSlashPercent := uint64(contract.ShippingDelay / timeTaken)
 		logger.Debug("vendorSlashPercent :: ", vendorSlashPercent)
@@ -77,12 +81,15 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 		panic("Escrow account insufficient balance")
 	}
 
+	// calculate the vendor payment for given order based on deal commission
 	vendorPay := uint64(0.01 * float64(deal.Commission*totalPay))
 	logger.Debug("vendorPay :: ", vendorPay)
 
+	// calculate the owner payment
 	ownerPay := totalPay - vendorPay
 	logger.Debug("ownerPay :: ", ownerPay)
 
+	// validate the addresses for different parties involved in the contract
 	consumerAddress, err := contract.GetConsumerAddress()
 	if err != nil {
 		panic("Invalid consumer address")
@@ -98,6 +105,7 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 		panic("Invalid vendor address")
 	}
 
+	// process the payment for all the parties
 	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, consumerAddress, sdk.NewCoins(contract.GetCoin(refundAmount)))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
@@ -113,14 +121,15 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
 	}
 
-	contract.Status = types.DELIVERED
+	// mark the contract status as completed as order has been delivered to consumer and settlement is complete
+	contract.Status = types.COMPLETED
 	k.Keeper.SetNewContract(ctx, contract)
 
 	ctx.GasMeter().ConsumeGas(types.SETTLEMENT_GAS, "Order delivered")
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-			sdk.NewAttribute(sdk.AttributeKeyAction, types.DELIVERED),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.COMPLETED),
 			sdk.NewAttribute(types.IDVALUE, contract.ContractId),
 			sdk.NewAttribute(types.CONSUMER, contract.Consumer),
 			sdk.NewAttribute(types.OWNER, deal.Owner),
