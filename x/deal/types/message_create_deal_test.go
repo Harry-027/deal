@@ -18,12 +18,14 @@ func TestMsgCreateDeal_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgCreateDeal{
 				Creator: "invalid_address",
+				Vendor:  "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgCreateDeal{
 				Creator: sample.AccAddress(),
+				Vendor:  sample.AccAddress(),
 			},
 		},
 	}

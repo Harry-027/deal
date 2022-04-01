@@ -27,23 +27,30 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 				NewDealList: []types.NewDeal{
 					{
-						DealId: "0",
+						DealId: "1",
 					},
 					{
-						DealId: "1",
+						DealId: "2",
 					},
 				},
 				ContractCounter: []*types.ContractCounter{
 					{
+						DealId:  "1",
 						IdValue: 74,
+					},
+					{
+						DealId:  "2",
+						IdValue: 4,
 					},
 				},
 				NewContractList: []types.NewContract{
 					{
-						ContractId: "0",
+						DealId:     "1",
+						ContractId: "1",
 					},
 					{
-						ContractId: "1",
+						DealId:     "2",
+						ContractId: "2",
 					},
 				},
 				// this line is used by starport scaffolding # types/genesis/validField
@@ -55,10 +62,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				NewDealList: []types.NewDeal{
 					{
-						DealId: "0",
+						DealId: "1",
 					},
 					{
-						DealId: "0",
+						DealId: "1",
 					},
 				},
 			},
@@ -69,10 +76,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				NewContractList: []types.NewContract{
 					{
-						ContractId: "0",
+						ContractId: "1",
 					},
 					{
-						ContractId: "0",
+						ContractId: "1",
 					},
 				},
 			},

@@ -27,7 +27,7 @@ func networkWithNewDealObjects(t *testing.T, n int) (*network.Network, []types.N
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
-	for i := 0; i < n; i++ {
+	for i := 1; i < n; i++ {
 		newDeal := types.NewDeal{
 			DealId: strconv.Itoa(i),
 		}

@@ -27,8 +27,9 @@ func networkWithNewContractObjects(t *testing.T, n int) (*network.Network, []typ
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
-	for i := 0; i < n; i++ {
+	for i := 1; i < n; i++ {
 		newContract := types.NewContract{
+			DealId:     "1",
 			ContractId: strconv.Itoa(i),
 		}
 		nullify.Fill(&newContract)
@@ -73,6 +74,7 @@ func TestShowNewContract(t *testing.T) {
 		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
+				"1",
 				tc.idIndex,
 			}
 			args = append(args, tc.args...)
@@ -99,8 +101,9 @@ func TestListNewContract(t *testing.T) {
 	net, objs := networkWithNewContractObjects(t, 5)
 
 	ctx := net.Validators[0].ClientCtx
-	request := func(next []byte, offset, limit uint64, total bool) []string {
+	request := func(obj types.NewContract, next []byte, offset, limit uint64, total bool) []string {
 		args := []string{
+			obj.DealId,
 			fmt.Sprintf("--%s=json", tmcli.OutputFlag),
 		}
 		if next == nil {
@@ -117,7 +120,7 @@ func TestListNewContract(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(objs); i += step {
-			args := request(nil, uint64(i), uint64(step), false)
+			args := request(objs[i], nil, uint64(i), uint64(step), false)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListNewContract(), args)
 			require.NoError(t, err)
 			var resp types.QueryAllNewContractResponse
@@ -133,7 +136,7 @@ func TestListNewContract(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(objs); i += step {
-			args := request(next, 0, uint64(step), false)
+			args := request(objs[i], next, 0, uint64(step), false)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListNewContract(), args)
 			require.NoError(t, err)
 			var resp types.QueryAllNewContractResponse
@@ -147,7 +150,7 @@ func TestListNewContract(t *testing.T) {
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		args := request(nil, 0, uint64(len(objs)), true)
+		args := request(objs[0], nil, 0, uint64(len(objs)), true)
 		out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListNewContract(), args)
 		require.NoError(t, err)
 		var resp types.QueryAllNewContractResponse

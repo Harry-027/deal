@@ -31,6 +31,7 @@ func TestNewContractQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetNewContractRequest{
+				DealId:     msgs[0].DealId,
 				ContractId: msgs[0].ContractId,
 			},
 			response: &types.QueryGetNewContractResponse{NewContract: msgs[0]},
@@ -38,13 +39,15 @@ func TestNewContractQuerySingle(t *testing.T) {
 		{
 			desc: "Second",
 			request: &types.QueryGetNewContractRequest{
-				ContractId: msgs[0].ContractId,
+				DealId:     msgs[1].DealId,
+				ContractId: msgs[1].ContractId,
 			},
 			response: &types.QueryGetNewContractResponse{NewContract: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetNewContractRequest{
+				DealId:     "0",
 				ContractId: msgs[0].ContractId,
 			},
 			err: status.Error(codes.InvalidArgument, "not found"),
@@ -76,6 +79,7 @@ func TestNewContractQueryPaginated(t *testing.T) {
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllNewContractRequest {
 		return &types.QueryAllNewContractRequest{
+			DealId: "1",
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,

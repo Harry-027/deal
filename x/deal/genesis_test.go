@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	keepertest "github.com/Harry-027/deal/testutil/keeper"
-	"github.com/Harry-027/deal/testutil/nullify"
 	"github.com/Harry-027/deal/x/deal"
 	"github.com/Harry-027/deal/x/deal/types"
 	"github.com/stretchr/testify/require"
@@ -19,10 +18,10 @@ func TestGenesis(t *testing.T) {
 		},
 		NewDealList: []types.NewDeal{
 			{
-				DealId: "0",
+				DealId: "1",
 			},
 			{
-				DealId: "1",
+				DealId: "2",
 			},
 		},
 		ContractCounter: []*types.ContractCounter{
@@ -30,13 +29,19 @@ func TestGenesis(t *testing.T) {
 				IdValue: 74,
 				DealId:  "1",
 			},
+			{
+				IdValue: 2,
+				DealId:  "2",
+			},
 		},
 		NewContractList: []types.NewContract{
 			{
-				ContractId: "0",
+				ContractId: "1",
+				DealId:     "1",
 			},
 			{
-				ContractId: "1",
+				ContractId: "2",
+				DealId:     "2",
 			},
 		},
 		// this line is used by starport scaffolding # genesis/test/state
@@ -45,11 +50,8 @@ func TestGenesis(t *testing.T) {
 	k, ctx := keepertest.DealKeeper(t)
 	deal.InitGenesis(ctx, *k, genesisState)
 	got := deal.ExportGenesis(ctx, *k)
+
 	require.NotNil(t, got)
-
-	nullify.Fill(&genesisState)
-	nullify.Fill(got)
-
 	require.Equal(t, genesisState.DealCounter, got.DealCounter)
 	require.ElementsMatch(t, genesisState.NewDealList, got.NewDealList)
 	require.ElementsMatch(t, genesisState.ContractCounter, got.ContractCounter)
