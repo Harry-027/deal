@@ -55,7 +55,7 @@ func (msg *MsgCancelOrder) DealHandlerValidation(goCtx context.Context, contract
 		return ErrInvalidConsumer
 	}
 
-	if contract.Status != APPROVED {
+	if contract.Status != APPROVED || contract.Status != INDELIVERY {
 		return ErrNotApproved
 	}
 

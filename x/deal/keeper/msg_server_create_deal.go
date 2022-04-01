@@ -46,7 +46,6 @@ func (k msgServer) CreateDeal(goCtx context.Context, msg *types.MsgCreateDeal) (
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-			sdk.NewAttribute(sdk.AttributeKeyAction, types.CANCELLED),
 			sdk.NewAttribute(types.IDVALUE, dealId),
 			sdk.NewAttribute(types.OWNER, newDeal.Owner),
 			sdk.NewAttribute(types.VENDOR, newDeal.Vendor),
