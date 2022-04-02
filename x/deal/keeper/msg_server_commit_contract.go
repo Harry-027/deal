@@ -60,6 +60,7 @@ func (k msgServer) CommitContract(goCtx context.Context, msg *types.MsgCommitCon
 			sdk.NewAttribute(sdk.AttributeKeyAction, types.COMMITTED),
 			sdk.NewAttribute(types.IDVALUE, contract.ContractId),
 			sdk.NewAttribute(types.VENDOR_ETA, strconv.FormatUint(uint64(contract.VendorETA), 10)),
+			sdk.NewAttribute(types.OWNER_ETA, strconv.FormatUint(uint64(contract.OwnerETA), 10)),
 		),
 	)
 

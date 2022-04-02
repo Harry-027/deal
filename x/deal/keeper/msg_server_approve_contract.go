@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"time"
 
 	"github.com/Harry-027/deal/x/deal/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -21,6 +22,12 @@ func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveC
 	err := msg.DealHandlerValidation(goCtx, &contract)
 	if err != nil {
 		return nil, err
+	}
+
+	expiryTime, err := time.Parse(types.TIME_FORMAT, contract.Expiry)
+	// don't process the expired contracts
+	if ctx.BlockTime().After(expiryTime) {
+		return nil, types.ErrContractExpired
 	}
 
 	// store funds from user account to module escrow account and approve the contract

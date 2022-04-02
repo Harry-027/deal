@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strconv"
 	"time"
 
 	"github.com/Harry-027/deal/x/deal/types"
@@ -45,34 +46,35 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 
 	// calculate the delivery delay in case if any
 	if deliveryActualTime.After(deliveryExpectedTime) {
-		deliveryTimeDelay := uint32(deliveryActualTime.Sub(deliveryExpectedTime).Minutes())
+		deliveryTimeDelay := deliveryActualTime.Sub(deliveryExpectedTime).Minutes()
 		logger.Debug("deliveryTimeDelay :: ", deliveryTimeDelay)
 		if contract.ShippingDelay != 0 {
 			// subtract the shipping delay if any
-			deliveryTimeDelay = deliveryTimeDelay - contract.ShippingDelay
+			deliveryTimeDelay = deliveryTimeDelay - float64(contract.ShippingDelay)
 			logger.Debug("deliveryTimeDelay after subtracting shipping delay", deliveryTimeDelay)
 		}
 		contract.DeliveryDelay = uint32(deliveryTimeDelay)
 	}
 
-	timeTaken := uint32(deliveryActualTime.Sub(startTime).Minutes())
+	timeTaken := deliveryActualTime.Sub(startTime).Minutes()
 	logger.Debug("timeTaken :: ", timeTaken)
 
-	var refundAmount uint64 = 0
-
+	var refundAmount float64 = 0
+	orderPayment := float64(contract.Fees)
 	// calculate the penalty for late delivery/shipping for owner & vendor respectively
 	if timeTaken != 0 {
-		vendorSlashPercent := uint64(contract.ShippingDelay / timeTaken)
+		vendorSlashPercent := float64(contract.ShippingDelay) / timeTaken
 		logger.Debug("vendorSlashPercent :: ", vendorSlashPercent)
 
-		ownerSlashPercent := uint64(contract.DeliveryDelay / timeTaken)
+		ownerSlashPercent := float64(contract.DeliveryDelay) / timeTaken
 		logger.Debug("ownerSlashPercent :: ", ownerSlashPercent)
 
-		refundAmount = (vendorSlashPercent * contract.Fees) + (ownerSlashPercent * contract.Fees)
+		refundAmount = (vendorSlashPercent + ownerSlashPercent) * orderPayment * 0.01
 		logger.Debug("refundAmount :: ", refundAmount)
 	}
 
-	totalPay := contract.Fees - refundAmount
+	//deduct delay charges from payment
+	totalPay := uint64(orderPayment - refundAmount)
 	logger.Debug("TotalPay :: ", totalPay)
 
 	moduleAccount := k.auth.GetModuleAddress(types.ModuleName)
@@ -106,7 +108,8 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 	}
 
 	// process the payment for all the parties
-	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, consumerAddress, sdk.NewCoins(contract.GetCoin(refundAmount)))
+	// refund the delay charges to consumer
+	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, consumerAddress, sdk.NewCoins(contract.GetCoin(uint64(refundAmount))))
 	if err != nil {
 		return nil, sdkerrors.Wrapf(err, types.ErrPaymentFailed.Error())
 	}
@@ -134,6 +137,9 @@ func (k msgServer) OrderDelivered(goCtx context.Context, msg *types.MsgOrderDeli
 			sdk.NewAttribute(types.CONSUMER, contract.Consumer),
 			sdk.NewAttribute(types.OWNER, deal.Owner),
 			sdk.NewAttribute(types.VENDOR, deal.Vendor),
+			sdk.NewAttribute(types.REFUND_PAY, strconv.FormatUint(uint64(refundAmount), 10)),
+			sdk.NewAttribute(types.OWNER_PAY, strconv.FormatUint(ownerPay, 10)),
+			sdk.NewAttribute(types.VENDOR_PAY, strconv.FormatUint(vendorPay, 10)),
 		),
 	)
 

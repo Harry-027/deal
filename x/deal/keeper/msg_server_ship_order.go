@@ -27,8 +27,8 @@ func (k msgServer) ShipOrder(goCtx context.Context, msg *types.MsgShipOrder) (*t
 		return nil, types.ErrContractNotFound
 	}
 
-	if contract.Status != types.APPROVED {
-		return nil, types.ErrNotApproved
+	if contract.Status != types.APPROVED || contract.Status == types.COMPLETED {
+		return nil, types.ErrNotApprovedOrCompleted
 	}
 
 	startTime, err := time.Parse(types.TIME_FORMAT, contract.StartTime)

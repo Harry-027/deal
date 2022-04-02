@@ -55,8 +55,8 @@ func (msg *MsgCancelOrder) DealHandlerValidation(goCtx context.Context, contract
 		return ErrInvalidConsumer
 	}
 
-	if contract.Status != APPROVED || contract.Status != INDELIVERY {
-		return ErrNotApproved
+	if contract.Status != APPROVED || contract.Status == COMPLETED {
+		return ErrNotApprovedOrCompleted
 	}
 
 	startTime, err := time.Parse(TIME_FORMAT, contract.StartTime)

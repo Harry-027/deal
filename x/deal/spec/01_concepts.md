@@ -30,7 +30,8 @@ Contract can be committed only if shipping time is less than half of delivery ti
 
 Once the contract has been committed by vendor, end user is asked for payment so that the order can be processed. The payment
 from end user is basically held in an escrow account which is basically the deal module account. The contract is marked as approved
-after successful payment from end user which also triggers a custom event to inform vendor about contract approval.
+after successful payment from end user which also triggers a custom event to inform vendor about contract approval.Note that 
+the end user needs to approve the contract before the expiry time so that order processing can get started at the proper time.
 
 ## Contract Shipping
 

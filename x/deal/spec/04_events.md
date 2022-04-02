@@ -36,6 +36,7 @@ The deal module emits the following events:
 | message | action        | COMMITTED       |
 | message | IdValue       | {contractId}    |
 | message | VendorETA     | {vendorETA}     |
+| message | OwnerETA      | {ownerETA}      |
 
 
 ### MsgApproveContract
@@ -66,6 +67,9 @@ The deal module emits the following events:
 | message | Consumer      | {consumer}      |
 | message | Owner         | {owner}         |
 | message | Vendor        | {vendor}        |
+| message | RefundPay     | {refundAmount}  |
+| message | OwnerPay      | {ownerPay}      |
+| message | VendorPay     | {vendorPay}     |
 
 
 ### MsgCancelOrder
