@@ -25,6 +25,10 @@ func (k msgServer) ApproveContract(goCtx context.Context, msg *types.MsgApproveC
 	}
 
 	expiryTime, err := time.Parse(types.TIME_FORMAT, contract.Expiry)
+	if err != nil {
+		return nil, err
+	}
+	
 	// don't process the expired contracts
 	if ctx.BlockTime().After(expiryTime) {
 		return nil, types.ErrContractExpired

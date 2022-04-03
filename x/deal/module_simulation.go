@@ -25,33 +25,25 @@ var (
 
 const (
 	opWeightMsgCreateDeal = "op_weight_msg_create_chain"
-	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateDeal int = 90
 
 	opWeightMsgCreateContract = "op_weight_msg_create_chain"
-	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateContract int = 90
 
 	opWeightMsgCommitContract = "op_weight_msg_create_chain"
-	// TODO: Determine the simulation weight value
 	defaultWeightMsgCommitContract int = 50
 
 	opWeightMsgApproveContract = "op_weight_msg_create_chain"
-	// TODO: Determine the simulation weight value
 	defaultWeightMsgApproveContract int = 40
 
 	opWeightMsgShipOrder = "op_weight_msg_create_chain"
-	// TODO: Determine the simulation weight value
 	defaultWeightMsgShipOrder int = 40
 
 	opWeightMsgOrderDelivered = "op_weight_msg_create_chain"
-	// TODO: Determine the simulation weight value
 	defaultWeightMsgOrderDelivered int = 40
 
 	opWeightMsgCancelOrder = "op_weight_msg_create_chain"
-	// TODO: Determine the simulation weight value
 	defaultWeightMsgCancelOrder int = 20
-
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
