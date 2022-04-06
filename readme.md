@@ -20,4 +20,4 @@ starport chain serve
 `serve` command installs dependencies, builds, initializes, and starts blockchain in development mode.
 
 #### Note - 
-Please note that deal blockchain is not part of any production or test network.
+Please note that the deal blockchain is not part of any production or test network. It has been developed in reference with blog post series - [Building an application specific blockchain using Cosmos SDK](https://medium.com/@harish0y2j/building-an-application-specific-blockchain-using-cosmos-sdk-part-1-1f8388902fc8)
