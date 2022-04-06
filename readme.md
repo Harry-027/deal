@@ -1,4 +1,4 @@
-# deal
+# Deal
 **deal** is an application specific blockchain built using **Cosmos SDK** and **Tendermint**, specifically to handle deals between online stores and vendors.
 It handles deals, contracts and fund related activity to decentralize the business model of online stores which prioritize
 the fair distribution of payments and non-violation of agreements.
@@ -11,7 +11,7 @@ the fair distribution of payments and non-violation of agreements.
 * Node's binary `deald` can be used to execute transactions and queries.
 
 ### Configure
-blockchain in development mode can be configured with `config.yml`.
+Blockchain in development mode can be configured with `config.yml`.
 
 ## Running locally
 ```
