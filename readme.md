@@ -11,7 +11,7 @@ the fair distribution of payments and non-violation of agreements.
 * Node's binary `deald` can be used to execute transactions and queries.
 
 ### Configure
-Blockchain in development mode can be configured with `config.yml`.
+Blockchain in development mode can be configured via `config.yml`.
 
 ## Running locally
 ```
